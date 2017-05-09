@@ -1,0 +1,17 @@
+{
+  "name": "fifths/php-route",
+  "authors": [
+    {
+      "name": "fifths",
+      "email": "ligangmingx@gmail.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.6.4"
+  },
+  "autoload": {
+    "psr-4": {
+      "Route\\": "src/Route/"
+    }
+  }
+}
