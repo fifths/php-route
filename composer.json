@@ -1,5 +1,5 @@
 {
-  "name": "fifths/php-route",
+  "name": "fifths/php-router",
   "authors": [
     {
       "name": "fifths",
@@ -11,7 +11,7 @@
   },
   "autoload": {
     "psr-4": {
-      "Route\\": "src/Route/"
+      "Router\\": "src/Router/"
     }
   }
 }

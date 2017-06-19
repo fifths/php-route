@@ -1,8 +1,8 @@
 <?php
 
-namespace Route;
+namespace Router;
 
-class Route
+class Router
 {
     public static $routes = [];
     public static $methods = [];
