@@ -9,8 +9,13 @@ class Router
     public static $callbacks = [];
     public static $error_callback;
 
+    /**
+     * @param $name 请求类型
+     * @param $arguments
+     */
     public static function __callstatic($name, $arguments)
     {
+        //请求地址
         $uri = $arguments[0];
         array_push(self::$routes, $uri);
         array_push(self::$methods, strtoupper($name));
