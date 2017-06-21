@@ -1,8 +1,17 @@
 <?php
 include '../vendor/autoload.php';
 
-use \Router\Router;
-Router::get('/', function () {
+use \Router\Route;
+
+Route::get('/', function () {
     echo 'Hello world!';
 });
-Router::dispatch();
+
+Route::get('/posts/{cate}/{name}', function ($cate,$name) {
+    //var_dump($cate);
+    var_dump($cate);
+    var_dump($name);
+});
+
+
+Route::dispatch();

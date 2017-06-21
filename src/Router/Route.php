@@ -2,7 +2,7 @@
 
 namespace Router;
 
-class Router
+class Route
 {
     public static $routes = [];
     public static $methods = [];
@@ -24,10 +24,11 @@ class Router
     public static function dispatch()
     {
         try {
-            //uri
+            //当前uri
             $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-            //请求类型
+            //当前请求类型
             $method = $_SERVER['REQUEST_METHOD'];
+
             if (in_array($uri, self::$routes)) {
                 $route_pos = array_keys(self::$routes, $uri);
                 foreach ($route_pos as $route) {
@@ -43,9 +44,36 @@ class Router
                         }
                     }
                 }
-            }else{
-                //regex with routes
+            } else {
 
+
+
+                foreach (self::$routes as $k => $route) {
+                    $route_bak = preg_replace('/\{[^\{\}]+\}/', '[^/]+', $route);
+                    // var_dump($route);
+
+                    // var_dump('#^' . $route_bak . '$#');
+                    if (preg_match_all('#^' . $route_bak . '$#', $uri, $matches)) {
+
+                        preg_match_all('/\{(.*?)\}/', $route, $matched);
+
+                        // var_dump($matches);
+
+                        if (self::$methods[$k] == $method || self::$methods[$k] == 'ANY') {
+                            if (self::$callbacks[$k]) {
+                                // do function
+                                return call_user_func_array(self::$callbacks[$k], $matched[1]);
+                            } else {
+                                /*$segments = explode('@', self::$callbacks[$route]);
+                                // new ob
+                                $controller = new $segments[0]();
+                                return $controller->{$segments[1]}();*/
+                            }
+                        }
+                    }
+                }
+                //regex with routes
+                //var_dump($uri);
             }
             if (self::$error_callback) {
                 self::get($_SERVER['REQUEST_URI'], self::$error_callback);
