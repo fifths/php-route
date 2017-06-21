@@ -45,34 +45,27 @@ class Route
                     }
                 }
             } else {
-
-
-
+                //regex with routes
                 foreach (self::$routes as $k => $route) {
-                    $route_bak = preg_replace('/\{[^\{\}]+\}/', '[^/]+', $route);
-                    // var_dump($route);
-
-                    // var_dump('#^' . $route_bak . '$#');
-                    if (preg_match_all('#^' . $route_bak . '$#', $uri, $matches)) {
-
-                        preg_match_all('/\{(.*?)\}/', $route, $matched);
-
-                        // var_dump($matches);
-
+                    $route = preg_replace('/\{(.*?)\}/', '([^/]+)', $route);
+                    if (preg_match('#^' . $route . '$#', $uri, $matches)) {
+                        array_shift($matches);
                         if (self::$methods[$k] == $method || self::$methods[$k] == 'ANY') {
-                            if (self::$callbacks[$k]) {
+                            if (is_object(self::$callbacks[$k])) {
                                 // do function
-                                return call_user_func_array(self::$callbacks[$k], $matched[1]);
+                                return call_user_func_array(self::$callbacks[$k], $matches);
                             } else {
-                                /*$segments = explode('@', self::$callbacks[$route]);
+
+                                $segments = explode('@', self::$callbacks[$k]);
+                                // var_dump($segments);die();
                                 // new ob
                                 $controller = new $segments[0]();
-                                return $controller->{$segments[1]}();*/
+                                call_user_func_array(array($controller, $segments[1]), $matches);
+                                return;
                             }
                         }
                     }
                 }
-                //regex with routes
                 //var_dump($uri);
             }
             if (self::$error_callback) {
